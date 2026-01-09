@@ -1,316 +1,41 @@
 /* style.css */
+* { margin: 0; padding: 0; box-sizing: border-box; } [cite: 60]
+body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; line-height: 1.6; } [cite: 61]
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; } [cite: 62]
 
-/* Reset y Estilos Base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); } [cite: 63, 64]
+.logo { font-size: 36px; margin-bottom: 10px; } [cite: 64, 65]
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8f9fa;
-    color: #333;
-    line-height: 1.6;
-}
+.menu-header { margin: 40px 0; text-align: center; } [cite: 66]
+.filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; } [cite: 67, 68]
+.filter-btn { padding: 10px 20px; border: 2px solid #667eea; background: white; color: #667eea; border-radius: 25px; cursor: pointer; transition: all 0.3s; } [cite: 69]
+.filter-btn.active, .filter-btn:hover { background: #667eea; color: white; } [cite: 70, 71]
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+.menu-section { display: none; margin-bottom: 50px; } [cite: 71]
+.menu-section.active { display: block; animation: fadeIn 0.5s ease; } [cite: 71, 72]
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } [cite: 72, 73]
 
-/* Header Principal */
-.header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; } [cite: 75]
+.menu-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s; } [cite: 76, 77]
+.menu-item:hover { transform: translateY(-5px); } [cite: 77, 78]
+.item-image { height: 180px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; font-size: 60px; color: #667eea; } [cite: 78, 79]
 
-.logo {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
+.item-content { padding: 20px; } [cite: 81]
+.item-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; } [cite: 82]
+.price { font-size: 20px; font-weight: 700; color: #667eea; } [cite: 82, 83]
 
-.tagline {
-    font-size: 18px;
-    opacity: 0.9;
-}
+.whatsapp-btn, .whatsapp-send-btn { background: #25D366; color: white; border: none; padding: 8px 16px; border-radius: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; } [cite: 83, 84, 85]
+.whatsapp-float { position: fixed; bottom: 30px; right: 30px; z-index: 1000; } [cite: 86, 87]
+.whatsapp-float-btn { width: 60px; height: 60px; background: #25D366; color: white; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; position: relative; box-shadow: 0 4px 15px rgba(37,211,102,0.4); } [cite: 87, 88, 89]
+.cart-count { position: absolute; top: -5px; right: -5px; background: #ff4444; color: white; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; display: flex; align-items: center; justify-content: center; } [cite: 89, 90]
 
-/* Filtros de Menú */
-.menu-header {
-    margin: 40px 0 30px;
-    text-align: center;
-}
+.cart-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; } [cite: 91, 92]
+.cart-modal.active { display: flex; } [cite: 93]
+.cart-content { background: white; width: 90%; max-width: 500px; border-radius: 12px; max-height: 80vh; display: flex; flex-direction: column; } [cite: 93, 94]
+.cart-header, .cart-footer { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; } [cite: 95, 98]
+.cart-items { flex: 1; overflow-y: auto; padding: 20px; } [cite: 95]
+.cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; } [cite: 95, 96]
+.hidden { display: none; } [cite: 91]
 
-.menu-header h2 {
-    font-size: 32px;
-    color: #333;
-    margin-bottom: 20px;
-}
+@media (max-width: 768px) { .menu-grid { grid-template-columns: 1fr; } } [cite: 100]
 
-.filters {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-
-.filter-btn {
-    padding: 10px 20px;
-    border: 2px solid #667eea;
-    background: white;
-    color: #667eea;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.filter-btn:hover, .filter-btn.active {
-    background: #667eea;
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Secciones y Grilla */
-.menu-section {
-    margin-bottom: 50px;
-    display: none;
-}
-
-.menu-section.active {
-    display: block;
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.section-title {
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-title i {
-    color: #667eea;
-}
-
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-/* Tarjetas de Items (Iconos en lugar de fotos) */
-.menu-item {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.menu-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-}
-
-.item-image {
-    width: 100%;
-    height: 180px;
-    background: #f0f2f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 64px;
-    color: #667eea;
-    transition: all 0.3s ease;
-}
-
-.menu-item:hover .item-image {
-    background: #eef1ff;
-    color: #764ba2;
-}
-
-.item-content {
-    padding: 20px;
-}
-
-.item-content h4 {
-    font-size: 18px;
-    margin-bottom: 8px;
-}
-
-.item-content p {
-    color: #666;
-    font-size: 13px;
-    margin-bottom: 15px;
-}
-
-.item-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.price {
-    font-size: 22px;
-    font-weight: 700;
-    color: #667eea;
-}
-
-/* Botones de WhatsApp */
-.whatsapp-btn, .whatsapp-send-btn {
-    background: #25D366;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-}
-
-.whatsapp-btn {
-    padding: 8px 16px;
-    font-size: 14px;
-}
-
-.whatsapp-btn:hover {
-    background: #20BA5A;
-    transform: scale(1.05);
-}
-
-/* Botón Flotante y Carrito */
-.whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 1000;
-}
-
-.whatsapp-float-btn {
-    width: 60px;
-    height: 60px;
-    background: #25D366;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.cart-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #ff4444;
-    color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hidden { display: none; }
-
-/* Modal del Carrito */
-.cart-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-}
-
-.cart-modal.active { display: flex; }
-
-.cart-content {
-    background: white;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.cart-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart-items {
-    padding: 20px;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.quantity-btn {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    cursor: pointer;
-}
-
-.cart-footer {
-    padding: 20px;
-    border-top: 1px solid #eee;
-}
-
-.whatsapp-send-btn {
-    width: 100%;
-    padding: 15px;
-    border-radius: 8px;
-    justify-content: center;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-    .menu-grid { grid-template-columns: 1fr; }
-    .whatsapp-float { bottom: 20px; right: 20px; }
-}
