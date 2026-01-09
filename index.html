@@ -2,70 +2,50 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Pro - 80 Platos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menú Digital | Pedidos por WhatsApp</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1 class="logo">🍽️ Restaurante Gourmet</h1>
-            <p class="tagline">80 Delicias a un click de distancia</p>
+
+    <header class="navbar">
+        <div class="container nav-content">
+            <h1 class="brand">🚀 Gourmet<span>Express</span></h1>
+            <div class="cart-trigger" id="openCart">
+                <i class="fas fa-shopping-basket"></i>
+                <span class="badge" id="cartCount">0</span>
+            </div>
         </div>
     </header>
 
-    <div class="container">
-        <div class="menu-header">
-            <h2>Nuestro Menú Extenso</h2>
-            <div class="filters">
-                <button class="filter-btn active" data-filter="all">Todo</button>
-                <button class="filter-btn" data-filter="entradas">Entradas</button>
-                <button class="filter-btn" data-filter="platos">Platos Fuertes</button>
-                <button class="filter-btn" data-filter="postres">Postres</button>
-                <button class="filter-btn" data-filter="bebidas">Bebidas</button>
+    <main class="container">
+        <nav class="categories-nav" id="categoryTabs">
+            <button class="tab-btn active" data-cat="entradas">Entradas</button>
+            <button class="tab-btn" data-cat="platos">Fuertes</button>
+            <button class="tab-btn" data-cat="postres">Postres</button>
+            <button class="tab-btn" data-cat="bebidas">Bebidas</button>
+        </nav>
+
+        <section id="menuDisplay" class="menu-grid">
+            </section>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="cart-modal">
+            <div class="modal-header">
+                <h3>Resumen de Pedido</h3>
+                <button class="close-btn" id="closeCart">&times;</button>
             </div>
-        </div>
-
-        <section class="menu-section" data-category="entradas">
-            <h3 class="section-title"><i class="fas fa-cheese"></i> Entradas</h3>
-            <div class="menu-grid" id="grid-entradas"></div>
-        </section>
-
-        <section class="menu-section" data-category="platos">
-            <h3 class="section-title"><i class="fas fa-utensils"></i> Platos Fuertes</h3>
-            <div class="menu-grid" id="grid-platos"></div>
-        </section>
-
-        <section class="menu-section" data-category="postres">
-            <h3 class="section-title"><i class="fas fa-ice-cream"></i> Postres</h3>
-            <div class="menu-grid" id="grid-postres"></div>
-        </section>
-
-        <section class="menu-section" data-category="bebidas">
-            <h3 class="section-title"><i class="fas fa-glass-wine"></i> Bebidas</h3>
-            <div class="menu-grid" id="grid-bebidas"></div>
-        </section>
-    </div>
-
-    <div class="whatsapp-float">
-        <button class="whatsapp-float-btn" id="whatsappCart">
-            <i class="fab fa-whatsapp"></i>
-            <span class="cart-count hidden" id="cartCount">0</span>
-        </button>
-    </div>
-
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <div class="cart-header">
-                <h3>Tu Pedido</h3>
-                <button class="close-cart" id="closeCart"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="cart-items" id="cartItems"></div>
-            <div class="cart-footer">
-                <div class="cart-total"><strong>Total: $<span id="cartTotal">0.00</span></strong></div>
-                <button class="whatsapp-send-btn" id="sendWhatsApp">
-                    <i class="fab fa-whatsapp"></i> Enviar Pedido
+            <div class="modal-body" id="cartItems">
+                </div>
+            <div class="modal-footer">
+                <div class="total-row">
+                    <span>Total a pagar:</span>
+                    <span id="cartTotal">$0.00</span>
+                </div>
+                <button class="btn-send" id="btnSend">
+                    <i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp
                 </button>
             </div>
         </div>
@@ -74,8 +54,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-    <script src="menu-restaurante.js"></script>
-</body>
-</html>
-
-
