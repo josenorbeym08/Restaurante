@@ -1,131 +1,292 @@
-const WHATSAPP_NUMBER = '573005979838';
+// Número de WhatsApp (cambiar por el número real del restaurante)
+const WHATSAPP_NUMBER = '1234567890'; // Formato: código de país + número sin espacios ni símbolos
 
-// Generador de base de datos de 80 productos
-const categories = ['entradas', 'platos', 'postres', 'bebidas'];
-const icons = { entradas: 'fa-cheese', platos: 'fa-utensils', postres: 'fa-ice-cream', bebidas: 'fa-glass-water' };
-const menuDB = [];
-
-categories.forEach(cat => {
-    for (let i = 1; i <= 20; i++) {
-        menuDB.push({
-            id: `${cat}-${i}`,
-            name: `${cat.charAt(0).toUpperCase() + cat.slice(1)} Especial #${i}`,
-            price: Math.floor(Math.random() * (25 - 5) + 5),
-            category: cat,
-            icon: icons[cat]
-        });
-    }
-});
-
+// Estado del carrito
 let cart = [];
 
-// Elementos del DOM
-const menuDisplay = document.getElementById('menuDisplay');
-const cartCount = document.getElementById('cartCount');
-const modal = document.getElementById('modalOverlay');
-
-// Iniciar aplicación
+// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    renderMenu('entradas');
-    setupEvents();
+    initializeFilters();
+    initializeCart();
+    showCategory('all');
 });
 
-function renderMenu(category) {
-    const filtered = menuDB.filter(item => item.category === category);
-    menuDisplay.innerHTML = filtered.map(item => `
-        <div class="product-card">
-            <div class="product-icon"><i class="fas ${item.icon}"></i></div>
-            <div class="product-info">
-                <h4>${item.name}</h4>
-                <p>Ingredientes frescos y sabor único.</p>
-                <strong>$${item.price.toFixed(2)}</strong>
-            </div>
-            <button class="btn-add" onclick="addToCart('${item.id}')">+</button>
-        </div>
-    `).join('');
-}
-
-function setupEvents() {
-    // Tabs de categoría
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.onclick = (e) => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            renderMenu(e.target.dataset.cat);
-        };
-    });
-
-    // Abrir/Cerrar Carrito
-    document.getElementById('openCart').onclick = () => {
-        updateCartUI();
-        modal.classList.add('active');
-    };
-    document.getElementById('closeCart').onclick = () => modal.classList.remove('active');
+// Filtros de categorías
+function initializeFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
     
-    // Enviar a WhatsApp
-    document.getElementById('btnSend').onclick = sendOrder;
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remover active de todos los botones
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Agregar active al botón clickeado
+            btn.classList.add('active');
+            
+            const filter = btn.getAttribute('data-filter');
+            showCategory(filter);
+        });
+    });
 }
 
-function addToCart(id) {
-    const product = menuDB.find(p => p.id === id);
-    const existing = cart.find(item => item.id === id);
+function showCategory(category) {
+    const sections = document.querySelectorAll('.menu-section');
+    
+    sections.forEach(section => {
+        if (category === 'all') {
+            section.classList.add('active');
+        } else {
+            const sectionCategory = section.getAttribute('data-category');
+            if (sectionCategory === category) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        }
+    });
+}
 
-    if (existing) {
-        existing.qty++;
+// Funcionalidad del carrito
+function initializeCart() {
+    // Botones de agregar al carrito
+    const whatsappButtons = document.querySelectorAll('.whatsapp-btn');
+    whatsappButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const item = btn.getAttribute('data-item');
+            const price = parseFloat(btn.getAttribute('data-price'));
+            addToCart(item, price);
+        });
+    });
+    
+    // Botón flotante del carrito
+    const cartButton = document.getElementById('whatsappCart');
+    cartButton.addEventListener('click', () => {
+        openCart();
+    });
+    
+    // Cerrar carrito
+    const closeCartBtn = document.getElementById('closeCart');
+    closeCartBtn.addEventListener('click', () => {
+        closeCart();
+    });
+    
+    // Enviar pedido por WhatsApp
+    const sendWhatsAppBtn = document.getElementById('sendWhatsApp');
+    sendWhatsAppBtn.addEventListener('click', () => {
+        sendOrderToWhatsApp();
+    });
+    
+    // Cerrar al hacer click fuera del modal
+    const cartModal = document.getElementById('cartModal');
+    cartModal.addEventListener('click', (e) => {
+        if (e.target === cartModal) {
+            closeCart();
+        }
+    });
+    
+    updateCartUI();
+}
+
+function addToCart(itemName, price) {
+    const existingItem = cart.find(item => item.name === itemName);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
     } else {
-        cart.push({ ...product, qty: 1 });
+        cart.push({
+            name: itemName,
+            price: price,
+            quantity: 1
+        });
     }
     
-    // Pequeña animación de feedback en el contador
-    cartCount.style.transform = "scale(1.3)";
-    setTimeout(() => cartCount.style.transform = "scale(1)", 200);
-    
-    updateCartTotals();
+    updateCartUI();
+    showNotification(`${itemName} agregado al carrito`);
 }
 
-function updateCartTotals() {
-    const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
-    cartCount.innerText = totalItems;
+function removeFromCart(itemName) {
+    cart = cart.filter(item => item.name !== itemName);
+    updateCartUI();
+    showNotification('Item removido del carrito');
+}
+
+function updateQuantity(itemName, change) {
+    const item = cart.find(item => item.name === itemName);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            removeFromCart(itemName);
+        } else {
+            updateCartUI();
+        }
+    }
+}
+
+function calculateTotal() {
+    return cart.reduce((total, item) => {
+        return total + (item.price * item.quantity);
+    }, 0);
 }
 
 function updateCartUI() {
-    const container = document.getElementById('cartItems');
-    const totalEl = document.getElementById('cartTotal');
+    const cartCount = document.getElementById('cartCount');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
     
+    // Actualizar contador
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+    
+    if (totalItems > 0) {
+        cartCount.classList.remove('hidden');
+    } else {
+        cartCount.classList.add('hidden');
+    }
+    
+    // Actualizar lista de items
     if (cart.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px;">Tu carrito está vacío.</p>';
-        totalEl.innerText = '$0.00';
+        cartItems.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
+    } else {
+        cartItems.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">$${item.price.toFixed(2)} c/u</div>
+                </div>
+                <div class="cart-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn" onclick="updateQuantity('${item.name}', -1)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity('${item.name}', 1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart('${item.name}')" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Actualizar total
+    cartTotal.textContent = calculateTotal().toFixed(2);
+    
+    // Habilitar/deshabilitar botón de enviar
+    const sendBtn = document.getElementById('sendWhatsApp');
+    sendBtn.disabled = cart.length === 0;
+}
+
+function openCart() {
+    const cartModal = document.getElementById('cartModal');
+    cartModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+    const cartModal = document.getElementById('cartModal');
+    cartModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Enviar pedido por WhatsApp
+function sendOrderToWhatsApp() {
+    if (cart.length === 0) {
+        showNotification('Tu carrito está vacío', 'error');
         return;
     }
-
-    container.innerHTML = cart.map(item => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
-            <div>
-                <strong>${item.name}</strong><br>
-                <small>${item.qty} x $${item.price.toFixed(2)}</small>
-            </div>
-            <strong>$${(item.qty * item.price).toFixed(2)}</strong>
-        </div>
-    `).join('');
-
-    const total = cart.reduce((acc, item) => acc + (item.qty * item.price), 0);
-    totalEl.innerText = `$${total.toFixed(2)}`;
-}
-
-function sendOrder() {
-    if (cart.length === 0) return alert("Añade productos primero");
-
-    let message = "👋 *Hola, quisiera realizar un pedido:*\n\n";
-    cart.forEach(item => {
-        message += `• *${item.qty}* x ${item.name} ($${(item.qty * item.price).toFixed(2)})\n`;
+    
+    // Construir mensaje
+    let message = '🍽️ *NUEVO PEDIDO*\n\n';
+    message += '📋 *Detalle del pedido:*\n\n';
+    
+    cart.forEach((item, index) => {
+        message += `${index + 1}. ${item.name}\n`;
+        message += `   Cantidad: ${item.quantity}\n`;
+        message += `   Precio: $${(item.price * item.quantity).toFixed(2)}\n\n`;
     });
     
-    const total = document.getElementById('cartTotal').innerText;
-    message += `\n💰 *Total a pagar: ${total}*`;
-    message += `\n\n📍 _Por favor confirmar disponibilidad._`;
-
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
+    message += `💰 *Total: $${calculateTotal().toFixed(2)}*\n\n`;
+    message += 'Gracias por tu pedido! 🎉';
+    
+    // Crear URL de WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+    
+    // Abrir WhatsApp
+    window.open(whatsappURL, '_blank');
+    
+    // Limpiar carrito después de enviar
+    setTimeout(() => {
+        cart = [];
+        updateCartUI();
+        closeCart();
+        showNotification('Pedido enviado por WhatsApp', 'success');
+    }, 500);
 }
+
+// Notificaciones
+function showNotification(message, type = 'success') {
+    // Remover notificación existente
+    const existing = document.querySelector('.notification');
+    if (existing) {
+        existing.remove();
+    }
+    
+    // Crear notificación
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    // Estilos
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#25D366' : '#ff4444'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 3000;
+        animation: slideInRight 0.3s ease-out;
+        font-size: 14px;
+        max-width: 300px;
+    `;
+    
+    // Agregar animación
+    if (!document.querySelector('#notification-animation')) {
+        const style = document.createElement('style');
+        style.id = 'notification-animation';
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Hacer funciones disponibles globalmente para onclick
+window.updateQuantity = updateQuantity;
+window.removeFromCart = removeFromCart;
+
+
 
 
