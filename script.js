@@ -150,7 +150,7 @@ function updateCartUI() {
             <div class="cart-item">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)} c/u</div>
+                    <div class="cart-item-price">$${item.price.toFixed(3)} c/u</div>
                 </div>
                 <div class="cart-item-actions">
                     <div class="quantity-control">
@@ -204,10 +204,10 @@ function sendOrderToWhatsApp() {
     cart.forEach((item, index) => {
         message += `${index + 1}. ${item.name}\n`;
         message += `   Cantidad: ${item.quantity}\n`;
-        message += `   Precio: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+        message += `   Precio: $${(item.price * item.quantity).toFixed(3)}\n\n`;
     });
     
-    message += `💰 *Total: $${calculateTotal().toFixed(2)}*\n\n`;
+    message += `💰 *Total: $${calculateTotal().toFixed(3)}*\n\n`;
     message += 'Gracias por tu pedido! 🎉';
     
     // Crear URL de WhatsApp
@@ -286,6 +286,7 @@ function showNotification(message, type = 'success') {
 // Hacer funciones disponibles globalmente para onclick
 window.updateQuantity = updateQuantity;
 window.removeFromCart = removeFromCart;
+
 
 
 
