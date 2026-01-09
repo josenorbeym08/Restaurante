@@ -171,7 +171,7 @@ function updateCartUI() {
     }
     
     // Actualizar total
-    cartTotal.textContent = calculateTotal().toFixed(2);
+    cartTotal.textContent = calculateTotal().toFixed(3);
     
     // Habilitar/deshabilitar botón de enviar
     const sendBtn = document.getElementById('sendWhatsApp');
@@ -286,6 +286,7 @@ function showNotification(message, type = 'success') {
 // Hacer funciones disponibles globalmente para onclick
 window.updateQuantity = updateQuantity;
 window.removeFromCart = removeFromCart;
+
 
 
 
