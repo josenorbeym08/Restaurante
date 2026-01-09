@@ -6,17 +6,6 @@
     <title>Menú Pro - 80 Platos</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Ajuste para usar iconos en lugar de fotos */
-        .item-image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f0f2f5;
-            color: #667eea;
-            font-size: 60px;
-        }
-    </style>
 </head>
 <body>
     <header class="header">
@@ -40,182 +29,22 @@
 
         <section class="menu-section" data-category="entradas">
             <h3 class="section-title"><i class="fas fa-cheese"></i> Entradas</h3>
-            <div class="menu-grid" id="grid-entradas">
-                <script>
-                    const entradas = [
-                        {n: "Bruschetta Clásica", p: 8.50, i: "fa-bread-slice"},
-                        {n: "Ceviche de Pescado", p: 12.00, i: "fa-fish"},
-                        {n: "Empanadas Criollas", p: 6.00, i: "fa-cloud"},
-                        {n: "Calamares Fritos", p: 11.50, i: "fa-shrimp"},
-                        {n: "Sopa de Cebolla", p: 7.00, i: "fa-bowl-food"},
-                        {n: "Carpaccio de Res", p: 14.00, i: "fa-leaf"},
-                        {n: "Nachos con Queso", p: 9.00, i: "fa-cheese"},
-                        {n: "Aros de Cebolla", p: 5.50, i: "fa-circle-dot"},
-                        {n: "Alitas BBQ", p: 10.00, i: "fa-drumstick-bite"},
-                        {n: "Hummus con Pita", p: 7.50, i: "fa-stroopwafel"},
-                        {n: "Tequeños de Queso", p: 6.50, i: "fa-bread-slice"},
-                        {n: "Tacos de Entrada", p: 8.00, i: "fa-bolt"},
-                        {n: "Ensalada Caprese", p: 10.50, i: "fa-apple-whole"},
-                        {n: "Croquetas de Jamón", p: 7.00, i: "fa-cookie"},
-                        {n: "Champiñones al Ajillo", p: 9.50, i: "fa-mushroom"},
-                        {n: "Provoleta Asada", p: 11.00, i: "fa-cheese"},
-                        {n: "Yuquitas Fritas", p: 5.00, i: "fa-seedling"},
-                        {n: "Patacones con Hogao", p: 6.00, i: "fa-layer-group"},
-                        {n: "Gazpacho Andaluz", p: 8.00, i: "fa-mug-hot"},
-                        {n: "Tartar de Atún", p: 15.00, i: "fa-water"}
-                    ];
-                    document.write(entradas.map(item => `
-                        <div class="menu-item">
-                            <div class="item-image"><i class="fas ${item.i}"></i></div>
-                            <div class="item-content">
-                                <h4>${item.n}</h4>
-                                <p>Deliciosa opción para comenzar tu experiencia gastronómica.</p>
-                                <div class="item-footer">
-                                    <span class="price">$${item.p.toFixed(2)}</span>
-                                    <button class="whatsapp-btn" data-item="${item.n}" data-price="${item.p}">
-                                        <i class="fab fa-whatsapp"></i> Pedir
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join(''));
-                </script>
-            </div>
+            <div class="menu-grid" id="grid-entradas"></div>
         </section>
 
         <section class="menu-section" data-category="platos">
             <h3 class="section-title"><i class="fas fa-utensils"></i> Platos Fuertes</h3>
-            <div class="menu-grid">
-                <script>
-                    const platos = [
-                        {n: "Lomo Saltado", p: 18.00, i: "fa-fire"},
-                        {n: "Salmón Rosado", p: 22.00, i: "fa-fish-vertical"},
-                        {n: "Ribeye Steak", p: 25.00, i: "fa-bacon"},
-                        {n: "Pasta Carbonara", p: 14.50, i: "fa-spaghetti-monster-flying"},
-                        {n: "Pollo al Curry", p: 16.00, i: "fa-mortar-pestle"},
-                        {n: "Paella Marinera", p: 28.00, i: "fa-shrimp"},
-                        {n: "Hamburguesa Trufada", p: 15.00, i: "fa-burger"},
-                        {n: "Lasagna de Carne", p: 13.50, i: "fa-layer-group"},
-                        {n: "Risotto de Setas", p: 17.00, i: "fa-wheat-awn"},
-                        {n: "Costillas BBQ", p: 19.50, i: "fa-bone"},
-                        {n: "Pato a la Naranja", p: 24.00, i: "fa-dove"},
-                        {n: "Bife de Chorizo", p: 23.00, i: "fa-cow"},
-                        {n: "Pizza Pepperoni", p: 12.00, i: "fa-pizza-slice"},
-                        {n: "Sushi Roll Variado", p: 18.50, i: "fa-shrimp"},
-                        {n: "Enchiladas Verdes", p: 13.00, i: "fa-pepper-hot"},
-                        {n: "Cordero Asado", p: 27.00, i: "fa-cloud"},
-                        {n: "Raviolis de Espinaca", p: 14.00, i: "fa-leaf"},
-                        {n: "Milanesa Napolitana", p: 15.50, i: "fa-bread-slice"},
-                        {n: "Pescado a la Talla", p: 21.00, i: "fa-fish"},
-                        {n: "Bowl Vegano", p: 12.50, i: "fa-seedling"}
-                    ];
-                    document.write(platos.map(item => `
-                        <div class="menu-item">
-                            <div class="item-image"><i class="fas ${item.i}"></i></div>
-                            <div class="item-content">
-                                <h4>${item.n}</h4>
-                                <p>Plato principal preparado con los mejores ingredientes del mercado.</p>
-                                <div class="item-footer">
-                                    <span class="price">$${item.p.toFixed(2)}</span>
-                                    <button class="whatsapp-btn" data-item="${item.n}" data-price="${item.p}">
-                                        <i class="fab fa-whatsapp"></i> Pedir
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join(''));
-                </script>
-            </div>
+            <div class="menu-grid" id="grid-platos"></div>
         </section>
 
         <section class="menu-section" data-category="postres">
             <h3 class="section-title"><i class="fas fa-ice-cream"></i> Postres</h3>
-            <div class="menu-grid">
-                <script>
-                    const postres = [
-                        {n: "Cheesecake Frutos Rojos", p: 7.50, i: "fa-cake-candles"},
-                        {n: "Tiramisú", p: 8.00, i: "fa-mug-hot"},
-                        {n: "Brownie con Helado", p: 6.50, i: "fa-ice-cream"},
-                        {n: "Volcán de Chocolate", p: 9.00, i: "fa-volcano"},
-                        {n: "Flan de la Casa", p: 5.00, i: "fa-custard"},
-                        {n: "Mousse de Maracuyá", p: 6.00, i: "fa-lemon"},
-                        {n: "Crème Brûlée", p: 8.50, i: "fa-fire-burner"},
-                        {n: "Pie de Limón", p: 6.50, i: "fa-slice"},
-                        {n: "Helado Artesanal", p: 4.50, i: "fa-ice-cream"},
-                        {n: "Frutas de Estación", p: 5.50, i: "fa-apple-whole"},
-                        {n: "Alfajores de Maicena", p: 3.50, i: "fa-cookie"},
-                        {n: "Arroz con Leche", p: 4.50, i: "fa-bowl-rice"},
-                        {n: "Crepas de Nutella", p: 7.00, i: "fa-scroll"},
-                        {n: "Tarta de Manzana", p: 6.50, i: "fa-apple-whole"},
-                        {n: "Panna Cotta", p: 7.00, i: "fa-glass-water"},
-                        {n: "Churros con Chocolate", p: 6.00, i: "fa-lines-leaning"},
-                        {n: "Pavlova de Fresa", p: 8.00, i: "fa-cloud"},
-                        {n: "Donas Glaseadas", p: 3.00, i: "fa-circle-dot"},
-                        {n: "Banoffee Pie", p: 7.50, i: "fa-banana"},
-                        {n: "Gelato Italiano", p: 5.50, i: "fa-ice-cream"}
-                    ];
-                    document.write(postres.map(item => `
-                        <div class="menu-item">
-                            <div class="item-image"><i class="fas ${item.i}"></i></div>
-                            <div class="item-content">
-                                <h4>${item.n}</h4>
-                                <p>El final perfecto para tu comida, dulce y equilibrado.</p>
-                                <div class="item-footer">
-                                    <span class="price">$${item.p.toFixed(2)}</span>
-                                    <button class="whatsapp-btn" data-item="${item.n}" data-price="${item.p}">
-                                        <i class="fab fa-whatsapp"></i> Pedir
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join(''));
-                </script>
-            </div>
+            <div class="menu-grid" id="grid-postres"></div>
         </section>
 
         <section class="menu-section" data-category="bebidas">
             <h3 class="section-title"><i class="fas fa-glass-wine"></i> Bebidas</h3>
-            <div class="menu-grid">
-                <script>
-                    const bebidas = [
-                        {n: "Copa Vino Tinto", p: 9.00, i: "fa-glass-wine"},
-                        {n: "Cerveza Artesanal", p: 6.50, i: "fa-beer-mug-empty"},
-                        {n: "Margarita", p: 10.00, i: "fa-martini-glass-citrus"},
-                        {n: "Mojito Clásico", p: 9.50, i: "fa-glass-citrus"},
-                        {n: "Limonada de Coco", p: 5.50, i: "fa-coconut"},
-                        {n: "Soda Italiana", p: 4.50, i: "fa-bottle-water"},
-                        {n: "Jugo Naranja Natural", p: 4.00, i: "fa-glass-water"},
-                        {n: "Té Frío con Limón", p: 3.50, i: "fa-leaf"},
-                        {n: "Café Expresso", p: 3.00, i: "fa-mug-hot"},
-                        {n: "Cappuccino", p: 4.50, i: "fa-mug-saucer"},
-                        {n: "Agua Mineral", p: 2.50, i: "fa-bottle-droplet"},
-                        {n: "Batido de Fresa", p: 5.00, i: "fa-blender"},
-                        {n: "Pisco Sour", p: 11.00, i: "fa-wine-glass"},
-                        {n: "Gin Tonic", p: 12.00, i: "fa-glass-half-full"},
-                        {n: "Sangría Jarra", p: 22.00, i: "fa-wine-bottle"},
-                        {n: "Whisky On Rocks", p: 15.00, i: "fa-glass-whiskey"},
-                        {n: "Caipirinha", p: 10.00, i: "fa-glass-citrus"},
-                        {n: "Té Matcha", p: 5.50, i: "fa-leaf"},
-                        {n: "Chocolate Caliente", p: 4.50, i: "fa-mug-hot"},
-                        {n: "Cerveza Nacional", p: 4.50, i: "fa-beer-mug-empty"}
-                    ];
-                    document.write(bebidas.map(item => `
-                        <div class="menu-item">
-                            <div class="item-image"><i class="fas ${item.i}"></i></div>
-                            <div class="item-content">
-                                <h4>${item.n}</h4>
-                                <p>Bebida refrescante o acompañamiento ideal para tu plato.</p>
-                                <div class="item-footer">
-                                    <span class="price">$${item.p.toFixed(2)}</span>
-                                    <button class="whatsapp-btn" data-item="${item.n}" data-price="${item.p}">
-                                        <i class="fab fa-whatsapp"></i> Pedir
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join(''));
-                </script>
-            </div>
+            <div class="menu-grid" id="grid-bebidas"></div>
         </section>
     </div>
 
@@ -242,7 +71,11 @@
         </div>
     </div>
 
+    <script src="script.js"></script>
+</body>
+</html>
     <script src="menu-restaurante.js"></script>
 </body>
 </html>
+
 
