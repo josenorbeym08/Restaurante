@@ -1,5 +1,5 @@
 // Número de WhatsApp (cambiar por el número real del restaurante)
-const WHATSAPP_NUMBER = '1234567890'; // Formato: código de país + número sin espacios ni símbolos
+const WHATSAPP_NUMBER = '573005979838'; // Formato: código de país + número sin espacios ni símbolos
 
 // Estado del carrito
 let cart = [];
@@ -240,7 +240,7 @@ function showNotification(message, type = 'success') {
     notification.textContent = message;
     
     // Estilos
-    notification.style.cssText = `
+    notification.style.css = `
         position: fixed;
         top: 20px;
         right: 20px;
@@ -286,4 +286,5 @@ function showNotification(message, type = 'success') {
 // Hacer funciones disponibles globalmente para onclick
 window.updateQuantity = updateQuantity;
 window.removeFromCart = removeFromCart;
+
 
