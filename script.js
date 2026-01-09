@@ -1,290 +1,157 @@
-// Número de WhatsApp (cambiar por el número real del restaurante)
-const WHATSAPP_NUMBER = '573005979838'; // Formato: código de país + número sin espacios ni símbolos
+// Configuración 
+const WHATSAPP_NUMBER = '573005979838'; [cite: 101]
+let cart = []; [cite: 102]
 
-// Estado del carrito
-let cart = [];
+// Datos del Menú (80 Platos) [cite: 6, 19, 32, 45]
+const menuData = {
+    entradas: [
+        {n: "Bruschetta Clásica", p: 8.50, i: "fa-bread-slice"}, {n: "Ceviche Pescado", p: 12.00, i: "fa-fish"},
+        {n: "Empanadas Criollas", p: 6.00, i: "fa-cloud"}, {n: "Calamares Fritos", p: 11.50, i: "fa-shrimp"},
+        {n: "Sopa de Cebolla", p: 7.00, i: "fa-bowl-food"}, {n: "Carpaccio de Res", p: 14.00, i: "fa-leaf"},
+        {n: "Nachos con Queso", p: 9.00, i: "fa-cheese"}, {n: "Aros de Cebolla", p: 5.50, i: "fa-circle-dot"},
+        {n: "Alitas BBQ", p: 10.00, i: "fa-drumstick-bite"}, {n: "Hummus con Pita", p: 7.50, i: "fa-stroopwafel"},
+        {n: "Tequeños Queso", p: 6.50, i: "fa-bread-slice"}, {n: "Tacos Entrada", p: 8.00, i: "fa-bolt"},
+        {n: "Ensalada Caprese", p: 10.50, i: "fa-apple-whole"}, {n: "Croquetas Jamón", p: 7.00, i: "fa-cookie"},
+        {n: "Champiñones Ajo", p: 9.50, i: "fa-mushroom"}, {n: "Provoleta Asada", p: 11.00, i: "fa-cheese"},
+        {n: "Yuquitas Fritas", p: 5.00, i: "fa-seedling"}, {n: "Patacones Hogao", p: 6.00, i: "fa-layer-group"},
+        {n: "Gazpacho Andaluz", p: 8.00, i: "fa-mug-hot"}, {n: "Tartar de Atún", p: 15.00, i: "fa-water"}
+    ],
+    platos: [
+        {n: "Lomo Saltado", p: 18.00, i: "fa-fire"}, {n: "Salmón Rosado", p: 22.00, i: "fa-fish-vertical"},
+        {n: "Ribeye Steak", p: 25.00, i: "fa-bacon"}, {n: "Pasta Carbonara", p: 14.50, i: "fa-spaghetti-monster-flying"},
+        {n: "Pollo al Curry", p: 16.00, i: "fa-mortar-pestle"}, {n: "Paella Marinera", p: 28.00, i: "fa-shrimp"},
+        {n: "Burger Trufada", p: 15.00, i: "fa-burger"}, {n: "Lasagna Carne", p: 13.50, i: "fa-layer-group"},
+        {n: "Risotto Setas", p: 17.00, i: "fa-wheat-awn"}, {n: "Costillas BBQ", p: 19.50, i: "fa-bone"},
+        {n: "Pato Naranja", p: 24.00, i: "fa-dove"}, {n: "Bife de Chorizo", p: 23.00, i: "fa-cow"},
+        {n: "Pizza Pepperoni", p: 12.00, i: "fa-pizza-slice"}, {n: "Sushi Variado", p: 18.50, i: "fa-shrimp"},
+        {n: "Enchiladas", p: 13.00, i: "fa-pepper-hot"}, {n: "Cordero Asado", p: 27.00, i: "fa-cloud"},
+        {n: "Raviolis", p: 14.00, i: "fa-leaf"}, {n: "Milanesa Napo", p: 15.50, i: "fa-bread-slice"},
+        {n: "Pescado Talla", p: 21.00, i: "fa-fish"}, {n: "Bowl Vegano", p: 12.50, i: "fa-seedling"}
+    ],
+    postres: [
+        {n: "Cheesecake", p: 7.50, i: "fa-cake-candles"}, {n: "Tiramisú", p: 8.00, i: "fa-mug-hot"},
+        {n: "Brownie Helado", p: 6.50, i: "fa-ice-cream"}, {n: "Volcán Choco", p: 9.00, i: "fa-volcano"},
+        {n: "Flan Casa", p: 5.00, i: "fa-custard"}, {n: "Mousse Maracuyá", p: 6.00, i: "fa-lemon"},
+        {n: "Crème Brûlée", p: 8.50, i: "fa-fire-burner"}, {n: "Pie de Limón", p: 6.50, i: "fa-slice"},
+        {n: "Helado Artesanal", p: 4.50, i: "fa-ice-cream"}, {n: "Frutas Estación", p: 5.50, i: "fa-apple-whole"},
+        {n: "Alfajores", p: 3.50, i: "fa-cookie"}, {n: "Arroz con Leche", p: 4.50, i: "fa-bowl-rice"},
+        {n: "Crepas Nutella", p: 7.00, i: "fa-scroll"}, {n: "Tarta Manzana", p: 6.50, i: "fa-apple-whole"},
+        {n: "Panna Cotta", p: 7.00, i: "fa-glass-water"}, {n: "Churros", p: 6.00, i: "fa-lines-leaning"},
+        {n: "Pavlova Fresa", p: 8.00, i: "fa-cloud"}, {n: "Donas Glaseadas", p: 3.00, i: "fa-circle-dot"},
+        {n: "Banoffee Pie", p: 7.50, i: "fa-banana"}, {n: "Gelato Italiano", p: 5.50, i: "fa-ice-cream"}
+    ],
+    bebidas: [
+        {n: "Copa Vino Tinto", p: 9.00, i: "fa-glass-wine"}, {n: "Cerveza Artesan", p: 6.50, i: "fa-beer-mug-empty"},
+        {n: "Margarita", p: 10.00, i: "fa-martini-glass-citrus"}, {n: "Mojito Clásico", p: 9.50, i: "fa-glass-citrus"},
+        {n: "Limonada Coco", p: 5.50, i: "fa-coconut"}, {n: "Soda Italiana", p: 4.50, i: "fa-bottle-water"},
+        {n: "Jugo Naranja", p: 4.00, i: "fa-glass-water"}, {n: "Té Frío", p: 3.50, i: "fa-leaf"},
+        {n: "Café Expresso", p: 3.00, i: "fa-mug-hot"}, {n: "Cappuccino", p: 4.50, i: "fa-mug-saucer"},
+        {n: "Agua Mineral", p: 2.50, i: "fa-bottle-droplet"}, {n: "Batido Fresa", p: 5.00, i: "fa-blender"},
+        {n: "Pisco Sour", p: 11.00, i: "fa-wine-glass"}, {n: "Gin Tonic", p: 12.00, i: "fa-glass-half-full"},
+        {n: "Sangría Jarra", p: 22.00, i: "fa-wine-bottle"}, {n: "Whisky Rocks", p: 15.00, i: "fa-glass-whiskey"},
+        {n: "Caipirinha", p: 10.00, i: "fa-glass-citrus"}, {n: "Té Matcha", p: 5.50, i: "fa-leaf"},
+        {n: "Choco Caliente", p: 4.50, i: "fa-mug-hot"}, {n: "Cerveza Nacional", p: 4.50, i: "fa-beer-mug-empty"}
+    ]
+};
 
-// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
+    renderMenu();
     initializeFilters();
-    initializeCart();
+    initializeCartLogic();
     showCategory('all');
 });
 
-// Filtros de categorías
+function renderMenu() {
+    for (let cat in menuData) {
+        const grid = document.getElementById(`grid-${cat}`);
+        grid.innerHTML = menuData[cat].map(item => `
+            <div class="menu-item">
+                <div class="item-image"><i class="fas ${item.i}"></i></div>
+                <div class="item-content">
+                    <h4>${item.n}</h4>
+                    <p>Deliciosa opción preparada al instante.</p>
+                    <div class="item-footer">
+                        <span class="price">$${item.p.toFixed(2)}</span>
+                        <button class="whatsapp-btn" onclick="addToCart('${item.n}', ${item.p})">
+                            <i class="fab fa-whatsapp"></i> Pedir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
 function initializeFilters() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    
-    filterButtons.forEach(btn => {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remover active de todos los botones
-            filterButtons.forEach(b => b.classList.remove('active'));
-            // Agregar active al botón clickeado
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            const filter = btn.getAttribute('data-filter');
-            showCategory(filter);
+            showCategory(btn.dataset.filter);
         });
     });
 }
 
 function showCategory(category) {
-    const sections = document.querySelectorAll('.menu-section');
-    
-    sections.forEach(section => {
-        if (category === 'all') {
-            section.classList.add('active');
-        } else {
-            const sectionCategory = section.getAttribute('data-category');
-            if (sectionCategory === category) {
-                section.classList.add('active');
-            } else {
-                section.classList.remove('active');
-            }
-        }
+    document.querySelectorAll('.menu-section').forEach(sec => {
+        sec.style.display = (category === 'all' || sec.dataset.category === category) ? 'block' : 'none';
     });
 }
 
-// Funcionalidad del carrito
-function initializeCart() {
-    // Botones de agregar al carrito
-    const whatsappButtons = document.querySelectorAll('.whatsapp-btn');
-    whatsappButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const item = btn.getAttribute('data-item');
-            const price = parseFloat(btn.getAttribute('data-price'));
-            addToCart(item, price);
-        });
-    });
-    
-    // Botón flotante del carrito
-    const cartButton = document.getElementById('whatsappCart');
-    cartButton.addEventListener('click', () => {
-        openCart();
-    });
-    
-    // Cerrar carrito
-    const closeCartBtn = document.getElementById('closeCart');
-    closeCartBtn.addEventListener('click', () => {
-        closeCart();
-    });
-    
-    // Enviar pedido por WhatsApp
-    const sendWhatsAppBtn = document.getElementById('sendWhatsApp');
-    sendWhatsAppBtn.addEventListener('click', () => {
-        sendOrderToWhatsApp();
-    });
-    
-    // Cerrar al hacer click fuera del modal
-    const cartModal = document.getElementById('cartModal');
-    cartModal.addEventListener('click', (e) => {
-        if (e.target === cartModal) {
-            closeCart();
-        }
-    });
-    
-    updateCartUI();
+function addToCart(name, price) {
+    const item = cart.find(i => i.name === name);
+    if (item) { item.quantity++; } else { cart.push({name, price, quantity: 1}); }
+    updateUI();
 }
 
-function addToCart(itemName, price) {
-    const existingItem = cart.find(item => item.name === itemName);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({
-            name: itemName,
-            price: price,
-            quantity: 1
-        });
-    }
-    
-    updateCartUI();
-    showNotification(`${itemName} agregado al carrito`);
-}
-
-function removeFromCart(itemName) {
-    cart = cart.filter(item => item.name !== itemName);
-    updateCartUI();
-    showNotification('Item removido del carrito');
-}
-
-function updateQuantity(itemName, change) {
-    const item = cart.find(item => item.name === itemName);
+function updateQuantity(name, delta) {
+    const item = cart.find(i => i.name === name);
     if (item) {
-        item.quantity += change;
-        if (item.quantity <= 0) {
-            removeFromCart(itemName);
-        } else {
-            updateCartUI();
-        }
+        item.quantity += delta;
+        if (item.quantity <= 0) cart = cart.filter(i => i.name !== name);
     }
+    updateUI();
 }
 
-function calculateTotal() {
-    return cart.reduce((total, item) => {
-        return total + (item.price * item.quantity);
-    }, 0);
-}
+function updateUI() {
+    const count = cart.reduce((s, i) => s + i.quantity, 0);
+    const countEl = document.getElementById('cartCount');
+    countEl.textContent = count;
+    countEl.classList.toggle('hidden', count === 0);
 
-function updateCartUI() {
-    const cartCount = document.getElementById('cartCount');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    
-    // Actualizar contador
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalItems;
-    
-    if (totalItems > 0) {
-        cartCount.classList.remove('hidden');
-    } else {
-        cartCount.classList.add('hidden');
-    }
-    
-    // Actualizar lista de items
+    const itemsEl = document.getElementById('cartItems');
     if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="empty-cart">Tu carrito está vacío</p>';
+        itemsEl.innerHTML = '<p>Tu carrito está vacío</p>';
     } else {
-        cartItems.innerHTML = cart.map(item => `
+        itemsEl.innerHTML = cart.map(i => `
             <div class="cart-item">
-                <div class="cart-item-info">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)} c/u</div>
-                </div>
-                <div class="cart-item-actions">
-                    <div class="quantity-control">
-                        <button class="quantity-btn" onclick="updateQuantity('${item.name}', -1)">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <span class="quantity">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity('${item.name}', 1)">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <button class="remove-item" onclick="removeFromCart('${item.name}')" title="Eliminar">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                <span>${i.name} (x${i.quantity})</span>
+                <div>
+                    <button onclick="updateQuantity('${i.name}', -1)">-</button>
+                    <button onclick="updateQuantity('${i.name}', 1)">+</button>
+                    <span>$${(i.price * i.quantity).toFixed(2)}</span>
                 </div>
             </div>
         `).join('');
     }
-    
-    // Actualizar total
-    cartTotal.textContent = calculateTotal().toFixed(2);
-    
-    // Habilitar/deshabilitar botón de enviar
-    const sendBtn = document.getElementById('sendWhatsApp');
-    sendBtn.disabled = cart.length === 0;
+    document.getElementById('cartTotal').textContent = cart.reduce((s, i) => s + (i.price * i.quantity), 0).toFixed(2);
 }
 
-function openCart() {
-    const cartModal = document.getElementById('cartModal');
-    cartModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+function initializeCartLogic() {
+    document.getElementById('whatsappCart').onclick = () => document.getElementById('cartModal').classList.add('active');
+    document.getElementById('closeCart').onclick = () => document.getElementById('cartModal').classList.remove('active');
+    document.getElementById('sendWhatsApp').onclick = sendToWhatsApp;
 }
 
-function closeCart() {
-    const cartModal = document.getElementById('cartModal');
-    cartModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-// Enviar pedido por WhatsApp
-function sendOrderToWhatsApp() {
-    if (cart.length === 0) {
-        showNotification('Tu carrito está vacío', 'error');
-        return;
-    }
-    
-    // Construir mensaje
-    let message = '🍽️ *NUEVO PEDIDO*\n\n';
-    message += '📋 *Detalle del pedido:*\n\n';
-    
-    cart.forEach((item, index) => {
-        message += `${index + 1}. ${item.name}\n`;
-        message += `   Cantidad: ${item.quantity}\n`;
-        message += `   Precio: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+function sendToWhatsApp() {
+    if (cart.length === 0) return;
+    let msg = "🍽️ *NUEVO PEDIDO*\n\n";
+    cart.forEach((i, idx) => {
+        msg += `${idx + 1}. ${i.name} x${i.quantity} - $${(i.price * i.quantity).toFixed(2)}\n`;
     });
-    
-    message += `💰 *Total: $${calculateTotal().toFixed(2)}*\n\n`;
-    message += 'Gracias por tu pedido! 🎉';
-    
-    // Crear URL de WhatsApp
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-    
-    // Abrir WhatsApp
-    window.open(whatsappURL, '_blank');
-    
-    // Limpiar carrito después de enviar
-    setTimeout(() => {
-        cart = [];
-        updateCartUI();
-        closeCart();
-        showNotification('Pedido enviado por WhatsApp', 'success');
-    }, 500);
+    msg += `\n💰 *Total: $${document.getElementById('cartTotal').textContent}*`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// Notificaciones
-function showNotification(message, type = 'success') {
-    // Remover notificación existente
-    const existing = document.querySelector('.notification');
-    if (existing) {
-        existing.remove();
-    }
-    
-    // Crear notificación
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Estilos
-    notification.style.css = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? '#25D366' : '#ff4444'};
-        color: white;
-        padding: 15px 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        z-index: 3000;
-        animation: slideInRight 0.3s ease-out;
-        font-size: 14px;
-        max-width: 300px;
-    `;
-    
-    // Agregar animación
-    if (!document.querySelector('#notification-animation')) {
-        const style = document.createElement('style');
-        style.id = 'notification-animation';
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    document.body.appendChild(notification);
-    
-    // Remover después de 3 segundos
-    setTimeout(() => {
-        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// Hacer funciones disponibles globalmente para onclick
-window.updateQuantity = updateQuantity;
-window.removeFromCart = removeFromCart;
 
 
