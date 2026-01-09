@@ -1,0 +1,14 @@
+// Dentro de tu archivo menu-restaurante.js
+function initializeCart() {
+    // Usamos delegación de eventos para capturar clicks en botones creados dinámicamente
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.whatsapp-btn')) {
+            const btn = e.target.closest('.whatsapp-btn');
+            const item = btn.getAttribute('data-item');
+            const price = parseFloat(btn.getAttribute('data-price'));
+            addToCart(item, price);
+        }
+    });
+    
+    // ... resto de tu código igual (botones de abrir/cerrar carrito, etc.)
+}
